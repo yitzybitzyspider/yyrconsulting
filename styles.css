@@ -139,16 +139,16 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   position: relative; isolation: isolate; overflow: hidden;
   min-height: max(640px, 100svh);
   display: grid; place-items: center;
-  background: linear-gradient(100deg, #10201a 0%, #163327 45%, #1d4433 100%);
+  background: linear-gradient(100deg, #3a2f1e 0%, #2c3322 45%, #102c22 100%);
   color: var(--cream);
 }
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background: radial-gradient(52% 42% at 50% 52%, rgb(12 26 20 / 0.72), rgb(12 26 20 / 0) 100%);
+  background: radial-gradient(56% 44% at 50% 52%, rgb(14 20 14 / 0.7), rgb(14 20 14 / 0) 100%);
 }
 .hero__copy { width: min(1100px, 100% - 2 * var(--gutter)); text-align: center; padding-top: 48px; }
 .hero__title {
-  font-size: clamp(3rem, 8.2vw, 6rem);
+  font-size: clamp(2.7rem, 6.6vw, 5.4rem);
   font-weight: 420; line-height: 1.02; letter-spacing: -0.04em;
   text-shadow: 0 2px 30px rgb(6 20 14 / 0.3);
 }
