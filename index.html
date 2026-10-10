@@ -1,295 +1,193 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YYR Consulting | Operations consulting that ships working systems</title>
-  <meta name="description" content="YYR Consulting rebuilds operations with AI-built custom tools: inventory systems, ERP operationalization, KPI dashboards, and asset recovery. Diagnosis to handoff in weeks, not quarters.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YYR Consulting | Working systems, not slide decks</title>
+  <meta name="description" content="YYR Consulting rebuilds how companies run: inventory, fulfillment, ERP, dashboards and AI adoption. From diagnosis to a running, handed‑off system in weeks.">
+  <meta name="theme-color" content="#faf6ee" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121a16" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="YYR Consulting">
+  <meta property="og:description" content="Operations and AI consulting. Working systems, not slide decks.">
+  <link rel="preload" href="fonts/Literata-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/Literata-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/RedHatMono-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="apple-touch-icon" href="favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ink: #16211c;
-      --body: #3d4a44;
-      --muted: #6b7a72;
-      --bg: #faf9f6;
-      --card: #ffffff;
-      --line: #e4e2db;
-      --accent: #1d6a4f;
-      --accent-dark: #14503b;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--body);
-      line-height: 1.65;
-      font-size: 17px;
-    }
-    h1, h2, h3 { font-family: "Fraunces", Georgia, serif; color: var(--ink); font-weight: 600; line-height: 1.15; }
-    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
-
-    header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 22px 0;
-    }
-    .logo { font-family: "Fraunces", Georgia, serif; font-size: 1.25rem; font-weight: 600; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; }
-    .logo img { width: 30px; height: 30px; border-radius: 8px; }
-    nav a { color: var(--muted); text-decoration: none; margin-left: 22px; font-size: 0.92rem; font-weight: 500; }
-    nav a:hover { color: var(--accent); }
-    @media (max-width: 640px) { nav a { margin-left: 14px; font-size: 0.85rem; } }
-
-    body::before {
-      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1;
-      background:
-        radial-gradient(600px 380px at 85% -5%, rgba(29,106,79,0.10), transparent 70%),
-        radial-gradient(500px 320px at -10% 30%, rgba(29,106,79,0.06), transparent 70%);
-    }
-    .hero { padding: 84px 0 72px; }
-    .hero h1 { font-size: clamp(2.2rem, 5.4vw, 3.6rem); max-width: 17ch; margin-bottom: 22px; }
-    .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(100deg, var(--accent), #2f9b74);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .hero p.lede { font-size: 1.18rem; max-width: 58ch; margin-bottom: 34px; }
-    .btn {
-      display: inline-block; background: var(--accent); color: #fff;
-      padding: 13px 26px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.98rem;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-      box-shadow: 0 2px 10px rgba(29,106,79,0.25);
-    }
-    .btn:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(29,106,79,0.3); }
-    .btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); margin-left: 12px; }
-    .btn.ghost:hover { background: var(--accent); color: #fff; }
-
-    .stats {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1px; background: var(--line); border-block: 1px solid var(--line);
-    }
-    .stat { background: var(--bg); padding: 34px 24px; }
-    .stat b {
-      display: block; font-family: "Fraunces", Georgia, serif; font-size: 2.5rem; font-weight: 600; margin-bottom: 4px;
-      background: linear-gradient(100deg, var(--accent-dark), #2f9b74);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .stat span { font-size: 0.9rem; color: var(--muted); }
-
-    section { padding: 76px 0; }
-    .kicker { text-transform: uppercase; letter-spacing: 0.09em; font-size: 0.78rem; font-weight: 600; color: var(--accent); margin-bottom: 12px; }
-    section h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); margin-bottom: 16px; max-width: 26ch; }
-    section > .wrap > p.intro { max-width: 62ch; margin-bottom: 40px; }
-
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-    .card {
-      background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 28px 26px;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-    }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(22,33,28,0.08); border-color: rgba(29,106,79,0.35); }
-    .card h3 { font-size: 1.15rem; margin-bottom: 10px; }
-    .card h3::after { content: ""; display: block; width: 32px; height: 3px; margin-top: 10px; border-radius: 2px; background: linear-gradient(90deg, var(--accent), #2f9b74); }
-    .card p { font-size: 0.95rem; }
-
-    .case { background: var(--card); border-block: 1px solid var(--line); }
-    .case-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start; }
-    @media (max-width: 760px) { .case-grid { grid-template-columns: 1fr; } }
-    .case-results { list-style: none; }
-    .case-results li {
-      padding: 14px 0 14px 30px; border-bottom: 1px solid var(--line);
-      position: relative; font-size: 0.98rem;
-    }
-    .case-results li::before {
-      content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 600;
-    }
-    .case-results li b { color: var(--ink); }
-
-    .steps { counter-reset: step; display: grid; gap: 0; }
-    .step { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 26px 0; border-bottom: 1px solid var(--line); }
-    .step:last-child { border-bottom: none; }
-    .step::before {
-      counter-increment: step; content: "0" counter(step);
-      font-family: "Fraunces", Georgia, serif; font-size: 1.7rem; color: var(--accent); font-weight: 500;
-    }
-    .step h3 { font-size: 1.1rem; margin-bottom: 6px; }
-    .step p { font-size: 0.96rem; max-width: 64ch; }
-
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
-    @media (max-width: 760px) { .about-grid { grid-template-columns: 1fr; } }
-    .about p + p { margin-top: 14px; }
-    .about-facts { list-style: none; border-left: 3px solid var(--accent); padding-left: 22px; align-self: center; }
-    .about-facts li { padding: 8px 0; font-size: 0.96rem; }
-    .about-facts li b { color: var(--ink); display: block; }
-
-    .contact { text-align: center; background: linear-gradient(150deg, #16211c, #1b3229 60%, #14503b); color: #cdd6d1; }
-    .contact h2 { color: #fff; margin-left: auto; margin-right: auto; }
-    .contact p { max-width: 52ch; margin: 0 auto 30px; }
-    .contact .btn { background: #fff; color: var(--ink); }
-    .contact .btn:hover { background: #e8e6df; }
-
-    footer { padding: 26px 0; font-size: 0.85rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.in { opacity: 1; transform: none; }
-    @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
-      .btn, .card { transition: none; }
-    }
-  </style>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <div class="wrap">
-    <header>
-      <a class="logo" href="#"><img src="favicon.svg" alt="">YYR Consulting</a>
-      <nav>
-        <a href="#services">Services</a>
-        <a href="#work">Work</a>
-        <a href="#approach">Approach</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
-  </div>
+  <header class="nav">
+    <nav class="nav__bar" aria-label="Primary">
+      <a class="brand" href="#top">
+        <img class="brand__mark" src="favicon.svg" alt="" width="30" height="30">
+        <span class="brand__name">YYR Consulting</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <a class="btn btn--ink btn--sm nav__cta" href="mailto:yitzy@bitzyspider.com?subject=Operations%20question">Start a conversation</a>
+    </nav>
+  </header>
 
-  <div class="wrap hero">
-    <h1>Operations consulting that ships <em>working systems</em>, not slide decks.</h1>
-    <p class="lede">YYR Consulting rebuilds how companies actually run: inventory, fulfillment, ERP, dashboards, and the workflows in between. Using AI-accelerated development, engagements go from diagnosis to a running, handed-off system in weeks, not quarters.</p>
-    <a class="btn" href="#contact">Start a conversation</a>
-    <a class="btn ghost" href="#work">See recent work</a>
-  </div>
-
-  <div class="stats">
-    <div class="wrap" style="display:contents">
-      <div class="stat"><b>10x</b><span>throughput gains from AI-built tooling on real workflows</span></div>
-      <div class="stat"><b>$100M+</b><span>in capital, funding, and operations supported across engagements</span></div>
-      <div class="stat"><b>Weeks</b><span>from diagnosis to a working, handed-off system, not quarters</span></div>
-      <div class="stat"><b>~0</b><span>the error rate processes get rebuilt to, mistakes designed out</span></div>
-    </div>
-  </div>
-
-  <section id="services">
-    <div class="wrap">
-      <p class="kicker">Services</p>
-      <h2>Built for operations that outgrew their spreadsheets</h2>
-      <p class="intro">Every engagement starts with the same question: where does the real work get stuck? Then we design the fix from first principles and build it, rather than leaving behind a recommendations memo.</p>
-      <div class="cards">
-        <div class="card">
-          <h3>Operations diagnosis &amp; turnaround</h3>
-          <p>Structured interviews with the people doing the work, a walk of the actual floor, and a prioritized map of where errors, delays, and double-work come from. Then we fix the biggest one first.</p>
-        </div>
-        <div class="card">
-          <h3>Custom AI-built internal tools</h3>
-          <p>Purpose-built apps for inventory, serial tracking, receiving, testing, and photography workflows, designed around how your team actually operates and built at AI speed on a modern cloud stack.</p>
-        </div>
-        <div class="card">
-          <h3>ERP operationalization</h3>
-          <p>Getting platforms like Odoo to actually run the business: warehouse operations wired to accounting, CRM talking to inventory, and one number everyone trusts instead of three that disagree.</p>
-        </div>
-        <div class="card">
-          <h3>KPIs, dashboards &amp; asset recovery</h3>
-          <p>Metric systems that show leadership what each team is doing and whether it's the right thing, plus disposition processes that turn idle inventory into recovered cash.</p>
-        </div>
-        <div class="card">
-          <h3>AI strategy &amp; adoption</h3>
-          <p>Figuring out where AI actually pays off in your business, and where it doesn't. Tool selection, workflow redesign, and a first win shipped fast enough to build belief.</p>
-        </div>
-        <div class="card">
-          <h3>AI governance &amp; enablement</h3>
-          <p>Practical policies and guardrails for how your company uses AI, plus hands-on training so your team works with these tools confidently instead of around them.</p>
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <canvas class="field" data-palette="forest" data-focus data-pointer aria-hidden="true"></canvas>
+      <div class="hero__copy">
+        <h1 class="hero__title" id="hero-title">
+          <span class="line"><span>Working systems,</span></span>
+          <span class="line"><span><em>not slide decks.</em></span></span>
+        </h1>
+        <p class="hero__sub">Operations and AI consulting. From diagnosis to a running, handed‑off system in weeks, not quarters.</p>
+        <div class="hero__actions">
+          <a class="btn btn--cream" href="mailto:yitzy@bitzyspider.com?subject=Operations%20question">Start a conversation<svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
+          <a class="btn btn--line-cream" href="#work">See recent work</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="case" id="work">
-    <div class="wrap">
-      <p class="kicker">Recent engagement</p>
-      <h2>Rebuilding operations for a multimillion-dollar equipment marketplace</h2>
-      <div class="case-grid">
-        <div>
-          <p>An equipment marketplace was triple-counting millions of dollars of inventory across spreadsheets and a half-implemented ERP. Wrong units were shipping, test results weren't attached to the gear they described, and leadership had no reliable view of what was actually on the shelf.</p>
-          <p style="margin-top:14px">In a matter of weeks, YYR designed and shipped a custom operations platform covering serial-level tracking, receiving and testing procedures, product photography workflow, cycle counts, and leadership dashboards, integrated with the company's ERP and CRM, then trained the operations team to run it independently.</p>
+    <section class="manifesto" aria-label="What YYR delivers">
+      <div class="wrap">
+        <p class="manifesto__text">
+          Tools that run <em>10x</em> the throughput of the spreadsheets they replace. More than <em>$100M</em> in capital, funding and operations supported. Systems handed off in <em>weeks</em>, with the errors designed out of them instead of caught after.
+        </p>
+      </div>
+    </section>
+
+    <section class="services" id="services" aria-labelledby="services-title">
+      <div class="wrap services__wrap">
+        <div class="services__intro">
+          <h2 class="h2" id="services-title">Built for operations that outgrew their spreadsheets.</h2>
+          <p class="lede">Every engagement starts with one question: where does the real work get stuck? Then I design the fix from first principles and build it, instead of leaving behind a memo.</p>
         </div>
-        <ul class="case-results">
-          <li><b>Errors near zero:</b> shipping and inventory mistakes engineered out of the process</li>
-          <li><b>One source of truth:</b> the whole warehouse tracked unit-by-unit in one platform</li>
-          <li><b>Cash recovered:</b> a seven-figure recovery pipeline built from idle and forgotten stock</li>
-          <li><b>Accounting unblocked:</b> the ERP finally running the business end to end</li>
-          <li><b>Real handoff:</b> a non-technical operations team runs everything day-to-day</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section id="approach">
-    <div class="wrap">
-      <p class="kicker">Approach</p>
-      <h2>Diagnose, design, build, hand off</h2>
-      <div class="steps">
-        <div class="step"><div>
-          <h3>Diagnose with the people doing the work</h3>
-          <p>Structured interviews across every department the process touches. The gap between how work is supposed to flow and how it actually flows is where the money is.</p>
-        </div></div>
-        <div class="step"><div>
-          <h3>Design from first principles</h3>
-          <p>No off-the-shelf template. Each system is reasoned from what the business actually needs to measure and move, so teams stop working around their tools.</p>
-        </div></div>
-        <div class="step"><div>
-          <h3>Build at AI speed</h3>
-          <p>AI-assisted development compresses what used to be a six-month software project into weeks, which means the budget goes into a working system instead of a pilot.</p>
-        </div></div>
-        <div class="step"><div>
-          <h3>Hand off something that outlives the engagement</h3>
-          <p>The job isn't done until your team, technical or not, runs the system without me. Documentation, training, and onboarding are part of every engagement.</p>
-        </div></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="case" id="about">
-    <div class="wrap">
-      <p class="kicker">About</p>
-      <h2>An operator and engineer, not a career advisor</h2>
-      <div class="about-grid">
-        <div class="about">
-          <p>YYR Consulting is led by Yitzy Rosenberg, an engineer-turned-operator who has spent a decade fixing operations from the inside, across startups, e-commerce warehouses, real estate portfolios, public infrastructure, and venture funds. Different rooms, same job: find where the real work gets stuck, build the system that fixes it, and leave behind a team that runs it themselves.</p>
-          <p>If you want the specifics for your situation, reach out and ask. There's probably a directly relevant example.</p>
+        <div class="services__groups">
+          <div class="group">
+            <h3 class="group__label">Operations</h3>
+            <dl class="svc">
+              <div class="svc__row">
+                <dt>Diagnosis and turnaround</dt>
+                <dd>Interviews with the people doing the work, a walk of the actual floor, and a map of where errors, delays and double work come from. Then the biggest one gets fixed first.</dd>
+              </div>
+              <div class="svc__row">
+                <dt>Custom AI-built internal tools</dt>
+                <dd>Apps for inventory, serial tracking, receiving, testing and photography, shaped around how your team really works and built at AI speed on a modern cloud stack.</dd>
+              </div>
+              <div class="svc__row">
+                <dt>ERP that actually runs the business</dt>
+                <dd>Getting platforms like Odoo to carry real operations: warehouse wired to accounting, CRM talking to inventory, and one number everyone trusts.</dd>
+              </div>
+              <div class="svc__row">
+                <dt>KPIs, dashboards and asset recovery</dt>
+                <dd>Metrics that show leadership what each team is doing and whether it is the right thing, plus disposition processes that turn idle inventory into cash.</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="group">
+            <h3 class="group__label">AI advisory</h3>
+            <dl class="svc">
+              <div class="svc__row">
+                <dt>AI strategy and adoption</dt>
+                <dd>Where AI pays off in your business and where it does not. Tool selection, workflow redesign, and a first win shipped fast enough to build belief.</dd>
+              </div>
+              <div class="svc__row">
+                <dt>AI governance and enablement</dt>
+                <dd>Practical policies and guardrails for how your company uses AI, plus hands-on training so your team works with these tools instead of around them.</dd>
+              </div>
+            </dl>
+          </div>
         </div>
-        <ul class="about-facts">
-          <li><b>Turnarounds under pressure</b>Comfortable walking into operations where things are actively on fire</li>
-          <li><b>Systems over advice</b>Every engagement ends with something running, not something recommended</li>
-          <li><b>AI leverage, proven</b>Building with AI daily to deliver in weeks what used to take quarters</li>
-          <li><b>MBA &amp; M.Eng, UC Berkeley</b>B.S. &amp; M.Eng in engineering, Cornell University</li>
-        </ul>
       </div>
+    </section>
+
+    <section class="work" id="work" aria-labelledby="work-title">
+      <canvas class="field" data-palette="forest" aria-hidden="true"></canvas>
+      <article class="work__card">
+        <h2 class="h2" id="work-title">Rebuilding operations for a multimillion-dollar equipment marketplace.</h2>
+        <div class="work__body">
+          <div class="work__story">
+            <p>The company was triple-counting millions of dollars of inventory across spreadsheets and a half-implemented ERP. Wrong units were shipping, test results were not attached to the gear they described, and leadership had no reliable view of what was on the shelf.</p>
+            <p>In a matter of weeks, YYR designed and shipped a custom operations platform: serial-level tracking, receiving and testing procedures, product photography, cycle counts and leadership dashboards, connected to the ERP and CRM. Then the operations team was trained to run it on their own.</p>
+          </div>
+          <ul class="results">
+            <li><strong>Errors near zero.</strong> Shipping and inventory mistakes engineered out of the process.</li>
+            <li><strong>One source of truth.</strong> The whole warehouse tracked unit by unit in one platform.</li>
+            <li><strong>Cash recovered.</strong> A seven-figure recovery pipeline built from idle stock.</li>
+            <li><strong>Accounting unblocked.</strong> The ERP running the business end to end.</li>
+            <li><strong>A real handoff.</strong> A non-technical team runs it day to day.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="approach" id="approach" aria-labelledby="approach-title">
+      <div class="wrap">
+        <h2 class="h2" id="approach-title">Diagnose, design, build, hand off.</h2>
+        <ol class="steps">
+          <li class="step">
+            <h3>Diagnose</h3>
+            <p>Structured interviews across every department the process touches. The gap between how work should flow and how it does is where the money is.</p>
+          </li>
+          <li class="step">
+            <h3>Design</h3>
+            <p>No off-the-shelf template. Each system is reasoned from what the business needs to measure and move, so teams stop working around their tools.</p>
+          </li>
+          <li class="step">
+            <h3>Build</h3>
+            <p>AI-assisted development turns a six-month software project into weeks, so the budget goes into a working system instead of a pilot.</p>
+          </li>
+          <li class="step">
+            <h3>Hand off</h3>
+            <p>The job is done when your team, technical or not, runs the system without me. Documentation and training come with every engagement.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="about" id="about" aria-labelledby="about-title">
+      <div class="wrap about__wrap">
+        <div class="about__text">
+          <h2 class="h2" id="about-title">An operator and engineer, not a career advisor.</h2>
+          <p class="lede">YYR Consulting is led by Yitzy Rosenberg, an engineer turned operator who has spent a decade fixing operations from the inside: startups, e-commerce warehouses, real estate portfolios, public infrastructure and venture funds. Different rooms, same job. Find where the work gets stuck, build the system that fixes it, and leave a team that runs it.</p>
+          <p class="lede">Want the specifics for your situation? Ask. There is probably a directly relevant example.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Turnarounds under pressure</dt><dd>Comfortable walking into operations that are actively on fire.</dd></div>
+          <div><dt>Systems over advice</dt><dd>Every engagement ends with something running, not something recommended.</dd></div>
+          <div><dt>AI leverage, proven</dt><dd>Building with AI daily to deliver in weeks what used to take quarters.</dd></div>
+          <div><dt>Berkeley and Cornell</dt><dd>MBA and M.Eng from UC Berkeley. B.S. and M.Eng in engineering from Cornell.</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact__wrap">
+        <h2 class="contact__title" id="contact-title">Have an operations problem that is <em>costing you money?</em></h2>
+        <p class="lede">Tell me what is stuck. If it is a fit, the first step is a short diagnosis, and you will know within weeks whether the fix is working.</p>
+        <div class="contact__actions">
+          <a class="btn btn--ink" href="mailto:yitzy@bitzyspider.com?subject=Operations%20question">Start a conversation<svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
+          <a class="contact__email" href="mailto:yitzy@bitzyspider.com">yitzy@bitzyspider.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__wrap">
+      <a class="brand" href="#top">
+        <img class="brand__mark" src="favicon.svg" alt="" width="26" height="26">
+        <span class="brand__name">YYR Consulting</span>
+      </a>
+      <p class="footer__meta">Operations and AI consulting. © 2026 YYR Consulting LLC.</p>
     </div>
-  </section>
+  </footer>
 
-  <section class="contact" id="contact">
-    <div class="wrap">
-      <h2>Have an operations problem that's costing you money?</h2>
-      <p>Tell me what's stuck. If it's a fit, the first step is a short diagnosis, and you'll know within weeks whether the fix is working.</p>
-      <a class="btn" href="mailto:yitzy@bitzyspider.com">Email YYR Consulting</a>
-    </div>
-  </section>
-
-  <div class="wrap">
-    <footer>
-      <span>© 2026 YYR Consulting</span>
-      <span>Operations · Systems · AI</span>
-    </footer>
-  </div>
-
-  <script>
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll("section .wrap, .stat, .card").forEach(el => {
-      el.classList.add("reveal"); io.observe(el);
-    });
-  </script>
+  <script src="js/field.js"></script>
+  <script src="js/site.js"></script>
 </body>
 </html>
