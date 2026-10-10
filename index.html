@@ -3,13 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>YYR Consulting | Operations that flow</title>
-  <meta name="description" content="Operations and AI consulting. I find what slows your team down and build systems that keep work moving.">
+  <title>YYR Consulting | Operations and AI consulting</title>
+  <meta name="description" content="Operations and AI consulting for growing companies. I find what slows your team down, then use AI to build the fix in weeks.">
   <meta name="theme-color" content="#faf6ee" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121a16" media="(prefers-color-scheme: dark)">
-  <meta property="og:title" content="YYR Consulting">
-  <meta property="og:description" content="Operations and AI consulting. Turn messy operations into systems that flow.">
-  <meta property="og:image" content="https://yyrconsulting.com/brand/yyr-linkedin-banner.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yyrconsulting.com/">
+  <meta property="og:title" content="YYR Consulting | Operations and AI consulting">
+  <meta property="og:description" content="Turn tangled operations into systems that flow.">
+  <meta property="og:image" content="https://yyrconsulting.com/brand/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preload" href="fonts/Literata-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/Literata-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/RedHatMono-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -30,7 +35,7 @@
       <ul class="nav__links">
         <li><a href="#services">Services</a></li>
         <li><a href="#work">Work</a></li>
-        <li><a href="#approach">Approach</a></li>
+        <li><a href="#approach">How it works</a></li>
         <li><a href="#about">About</a></li>
       </ul>
       <a class="btn btn--ink btn--sm nav__cta" href="mailto:yitzy@bitzyspider.com?subject=Hello%20YYR%20Consulting">Send an email</a>
@@ -42,67 +47,54 @@
       <canvas class="flow" data-state="mud" data-pointer aria-hidden="true"></canvas>
       <div class="hero__copy">
         <h1 class="hero__title" id="hero-title">
-          <span class="line"><span>Turn messy operations</span></span>
+          <span class="line"><span>Turn tangled operations</span></span>
           <span class="line"><span>into systems that <em>flow.</em></span></span>
         </h1>
-        <p class="hero__sub">Operations and AI consulting. I find what slows your team down and build systems that keep work moving.</p>
+        <p class="hero__sub">Operations and AI consulting. I find what slows your team down, then use AI to build the fix in weeks.</p>
         <div class="hero__actions">
           <a class="btn btn--cream" href="mailto:yitzy@bitzyspider.com?subject=Hello%20YYR%20Consulting">Send an email<svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
-          <a class="btn btn--line-cream" href="#work">See the work</a>
+          <a class="btn btn--line-cream" href="#work">See an example</a>
         </div>
       </div>
     </section>
 
-    <section class="proof" aria-label="Results">
+    <section class="audience" aria-label="Who this is for">
       <div class="wrap">
-        <ul class="proof__list">
-          <li><em>10x</em> throughput</li>
-          <li><em>$100M+</em> supported</li>
-          <li>Results in <em>weeks</em></li>
-        </ul>
+        <p class="audience__text">For growing companies whose operations have outgrown their spreadsheets.</p>
       </div>
     </section>
 
     <section class="services" id="services" aria-labelledby="services-title">
       <div class="wrap services__wrap">
         <h2 class="h2" id="services-title">What I do</h2>
-        <div class="services__groups">
-          <div class="group">
-            <h3 class="group__label">Operations</h3>
-            <dl class="svc">
-              <div class="svc__row"><dt>Diagnosis and turnaround</dt><dd>Pinpoint what slows you down and fix what matters most first.</dd></div>
-              <div class="svc__row"><dt>Custom AI-built tools</dt><dd>Internal apps built around how your team actually works.</dd></div>
-              <div class="svc__row"><dt>Connected systems</dt><dd>Your tools working together, so every team sees the same numbers.</dd></div>
-              <div class="svc__row"><dt>Dashboards and asset recovery</dt><dd>See what every team is doing. Turn idle stock into cash.</dd></div>
-            </dl>
-          </div>
-          <div class="group">
-            <h3 class="group__label">AI advisory</h3>
-            <dl class="svc">
-              <div class="svc__row"><dt>AI strategy</dt><dd>A clear plan for where AI pays off, plus a quick first win.</dd></div>
-              <div class="svc__row"><dt>AI governance and training</dt><dd>Clear guardrails and hands-on training so your team uses AI with confidence.</dd></div>
-            </dl>
-          </div>
-        </div>
+        <dl class="svc">
+          <div class="svc__row"><dt>Diagnosis and quick wins</dt><dd>Pinpoint what slows your team down and fix what matters most first.</dd></div>
+          <div class="svc__row"><dt>Custom AI-built tools</dt><dd>Internal apps built for your team’s day-to-day work.</dd></div>
+          <div class="svc__row"><dt>Connected systems and dashboards</dt><dd>Your tools working together, so every team sees the same numbers.</dd></div>
+          <div class="svc__row"><dt>AI strategy and training</dt><dd>Where AI pays off, sensible guardrails, and hands-on training for your team.</dd></div>
+        </dl>
       </div>
     </section>
 
     <section class="work" id="work" aria-labelledby="work-title">
       <canvas class="flow" data-state="clean" aria-hidden="true"></canvas>
       <article class="work__card">
-        <h2 class="h2" id="work-title">An equipment marketplace, running smoothly in weeks.</h2>
-        <div class="work__body">
-          <div class="work__story">
-            <p>I brought millions of dollars of inventory into one platform the whole company trusts.</p>
-            <p>Receiving, testing and tracking now run as one connected process, and the team runs it on their own.</p>
+        <h2 class="h2" id="work-title">An equipment marketplace, rebuilt in two months.</h2>
+        <div class="ba">
+          <div class="ba__col">
+            <h3 class="ba__label">Before</h3>
+            <p>Inventory lived in three systems that disagreed, so the team double-checked everything by hand.</p>
           </div>
-          <ul class="results">
-            <li>Errors near zero</li>
-            <li>One source of truth</li>
-            <li>Seven figures recovered from idle stock</li>
-            <li>A team that runs it independently</li>
-          </ul>
+          <div class="ba__col">
+            <h3 class="ba__label">After</h3>
+            <p>One platform the whole company trusts, with receiving, testing and tracking as one connected process.</p>
+          </div>
         </div>
+        <ul class="results">
+          <li><strong>100+ to 3 or 4</strong> inventory errors per area</li>
+          <li><strong>Seven figures</strong> in idle stock headed back to cash</li>
+          <li><strong>In-house</strong> team owns it day to day</li>
+        </ul>
       </article>
     </section>
 
@@ -111,29 +103,36 @@
         <h2 class="h2" id="approach-title">How it works</h2>
         <ol class="steps">
           <li class="step"><h3>Diagnose</h3><p>Talk to the people doing the work.</p></li>
-          <li class="step"><h3>Design</h3><p>Shape the system around what the business needs.</p></li>
+          <li class="step"><h3>Design</h3><p>Map how work really moves, then design the fix.</p></li>
           <li class="step"><h3>Build</h3><p>AI-assisted, so it ships in weeks.</p></li>
-          <li class="step"><h3>Hand off</h3><p>Your team owns it and runs it with confidence.</p></li>
+          <li class="step"><h3>Hand off</h3><p>Your team runs it from day one.</p></li>
         </ol>
+        <p class="steps__note">Engagements start with a short diagnosis, then build and hand off within a couple of months.</p>
       </div>
     </section>
 
     <section class="about" id="about" aria-labelledby="about-title">
       <div class="wrap about__wrap">
+        <img class="about__photo" src="img/yitzy-rosenberg.jpg" alt="Yitzy Rosenberg" width="720" height="712" loading="lazy">
         <div class="about__text">
-          <h2 class="h2" id="about-title">Hi, I’m Yitzy.</h2>
-          <p class="lede">Engineer turned operator. I’ve spent a decade building operations that work, in warehouses, real estate portfolios, public infrastructure and startups.</p>
+          <h2 class="h2" id="about-title">Hi, I’m Yitzy Rosenberg.</h2>
+          <p class="lede">Engineer turned operator. I’ve spent a decade building operations that work, from warehouses and real estate portfolios to public infrastructure.</p>
+          <ul class="creds">
+            <li>Ran operations at a $15M+ equipment marketplace</li>
+            <li>Internal consultant to the CEO of a $1B+ real estate developer</li>
+            <li>Helped secure $100M+ in public infrastructure funding</li>
+            <li>Built an AI tool that took deal review from 10 to nearly 100 a week</li>
+          </ul>
+          <p class="about__edu">MBA and M.Eng, UC Berkeley · B.S. and M.Eng, Cornell</p>
+          <a class="about__link" href="https://www.linkedin.com/in/yitzyrosenberg/" rel="noopener">LinkedIn profile<svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
         </div>
-        <dl class="facts">
-          <div><dt>UC Berkeley</dt><dd>MBA and M.Eng</dd></div>
-          <div><dt>Cornell</dt><dd>B.S. and M.Eng in engineering</dd></div>
-        </dl>
       </div>
     </section>
 
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <div class="wrap contact__wrap">
         <h2 class="contact__title" id="contact-title">Let’s get your operations <em>flowing.</em></h2>
+        <p class="lede">Tell me what’s slowing your team down, and I’ll reply personally.</p>
         <div class="contact__actions">
           <a class="btn btn--ink" href="mailto:yitzy@bitzyspider.com?subject=Hello%20YYR%20Consulting">Send an email<svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></a>
         </div>
@@ -147,7 +146,7 @@
         <img class="brand__mark" src="favicon.svg" alt="" width="26" height="26">
         <span class="brand__name">YYR Consulting</span>
       </a>
-      <p class="footer__meta">© 2026 YYR Consulting LLC</p>
+      <p class="footer__meta"><a href="https://www.linkedin.com/in/yitzyrosenberg/" rel="noopener">LinkedIn</a><span>© 2026 YYR Consulting LLC</span></p>
     </div>
   </footer>
 
