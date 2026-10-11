@@ -48,12 +48,20 @@
       return grid[cy * cols + cx];
     }
 
-    function spawn(p, anywhere) {
-      p.x = anywhere ? Math.random() * W : Math.random() * W * 0.6;
+    // Working flow never appears mid-screen: it streams in from off the left edge.
+    // Only mud shows up in place, because mud is already sitting there.
+    function spawn(p, initial) {
       p.y = Math.random() * H;
+      p.x = Math.random() * W * (initial ? 1 : 0.6);
       p.age = 0;
-      p.life = 6 + Math.random() * 12;
       p.n = 0;
+      p.freed = false;
+      if (cleanAt(p.x, p.y) > 0.5) {
+        p.x = initial ? -Math.random() * W : -10 - Math.random() * Math.min(W * 0.25, 220);
+        p.life = Infinity;
+      } else {
+        p.life = 6 + Math.random() * 12;
+      }
       p.c = cleanAt(p.x, p.y);
     }
 
@@ -73,9 +81,9 @@
       img = bgx.createImageData(cols, rows);
       const want = Math.min(1500, Math.round((W * H) / 700));
       while (parts.length < want) {
-        const p = { hx: new Float32Array(TRAIL), hy: new Float32Array(TRAIL), o: Math.random() * Math.PI * 2, ph: Math.random() * Math.PI * 2 };
+        const p = { hx: new Float32Array(TRAIL), hy: new Float32Array(TRAIL), o: Math.random() * Math.PI * 2, ph: Math.random() * Math.PI * 2, sp: 0.7 + Math.random() * 0.6 };
         spawn(p, true);
-        p.age = Math.random() * p.life;
+        if (p.life !== Infinity) p.age = Math.random() * p.life;
         parts.push(p);
       }
       parts.length = want;
@@ -121,6 +129,12 @@
       for (const p of parts) {
         const c = cleanAt(p.x, p.y);
         p.c = c;
+        // As the cleanup passes, some freed mud lines retract and re-enter from the left edge,
+        // so working flow keeps streaming in behind the front instead of leaving a gap.
+        if (c > 0.5 && p.life !== Infinity && !p.freed) {
+          p.freed = true;
+          if (Math.random() < 0.6) p.life = Math.min(p.life, p.age + 0.6 + Math.random() * 3.5);
+        }
         // Broken: tangled, stop-and-go, sometimes backwards.
         const a = noise(p.x * 0.016 + t * 0.05, p.y * 0.016) * Math.PI * 6 + p.o;
         const burst = Math.pow(Math.max(0, Math.sin(t * 1.5 + p.ph)), 3);
@@ -128,14 +142,24 @@
         const mx = Math.cos(a) * ms + 2, my = Math.sin(a) * ms;
         // Working: fast, orderly lanes with a gentle wave.
         const fa = 0.12 * Math.sin(p.y * 0.012 + p.x * 0.002 + t * 0.5);
-        const fx = Math.cos(fa) * 130, fy = Math.sin(fa) * 130;
-        p.x += lerp(mx, fx, c) * dt;
-        p.y += lerp(my, fy, c) * dt;
+        const fx = Math.cos(fa) * 130 * p.sp, fy = Math.sin(fa) * 130 * p.sp;
+        let vx = lerp(mx, fx, c), vy = lerp(my, fy, c);
+        // A hand in the river: lines part and swirl around the pointer, before and after the cleanup.
+        if (ptr.on) {
+          const dx = p.x - ptr.x, dy = p.y - ptr.y, d = Math.hypot(dx, dy);
+          if (d < 170 && d > 0.01) {
+            const k = (1 - d / 170) ** 2;
+            vx += ((dx / d) * 230 - (dy / d) * 110) * k;
+            vy += ((dy / d) * 230 + (dx / d) * 110) * k;
+          }
+        }
+        p.x += vx * dt;
+        p.y += vy * dt;
         p.age += dt;
         for (let i = TRAIL - 1; i > 0; i--) { p.hx[i] = p.hx[i - 1]; p.hy[i] = p.hy[i - 1]; }
         p.hx[0] = p.x; p.hy[0] = p.y;
         if (p.n < TRAIL) p.n++;
-        if (p.x > W + 30 || p.x < -30 || p.y < -30 || p.y > H + 30 || p.age > p.life) spawn(p, false);
+        if (p.x > W + 30 || (p.x < -160 && c < 0.5) || p.y < -40 || p.y > H + 40 || p.age > p.life) spawn(p, false);
       }
     }
 
@@ -168,10 +192,13 @@
         ctx.beginPath();
         let any = false;
         for (const p of parts) {
-          if (p.n < 2 || p.age < 0.4 || p.life - p.age < 0.4) continue;
+          if (p.n < 2) continue;
           if (Math.min(BUCKETS - 1, Math.floor(p.c * BUCKETS)) !== k) continue;
+          // Trails grow in from the head at birth and retract into it before a mud line dies, so nothing pops.
+          const left = p.life - p.age;
+          const n = left < 0.6 ? Math.max(2, Math.floor(p.n * left / 0.6)) : p.n;
           ctx.moveTo(p.hx[0], p.hy[0]);
-          for (let i = 1; i < p.n; i++) ctx.lineTo(p.hx[i], p.hy[i]);
+          for (let i = 1; i < n; i++) ctx.lineTo(p.hx[i], p.hy[i]);
           any = true;
         }
         if (any) { ctx.strokeStyle = lineStyles[k].stroke; ctx.lineWidth = lineStyles[k].width; ctx.stroke(); }
@@ -179,11 +206,16 @@
     }
 
     if (opts.pointerTarget) {
-      opts.pointerTarget.addEventListener('pointermove', (e) => {
+      const move = (e) => {
         const r = canvas.getBoundingClientRect();
         ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top; ptr.on = true;
-      });
-      opts.pointerTarget.addEventListener('pointerleave', () => { ptr.on = false; });
+      };
+      const off = () => { ptr.on = false; };
+      opts.pointerTarget.addEventListener('pointermove', move);
+      opts.pointerTarget.addEventListener('pointerdown', move);
+      opts.pointerTarget.addEventListener('pointerleave', off);
+      opts.pointerTarget.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') off(); });
+      opts.pointerTarget.addEventListener('pointercancel', off);
     }
 
     let raf = 0, last = 0, acc = 0;

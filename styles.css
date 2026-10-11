@@ -136,6 +136,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 /* Hero */
 .flow { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
 .hero {
+  touch-action: pan-y;
   position: relative; isolation: isolate; overflow: hidden;
   min-height: max(640px, 100svh);
   display: grid; place-items: center;
@@ -153,7 +154,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   text-shadow: 0 2px 30px rgb(6 20 14 / 0.3);
 }
 .hero__title em { font-weight: 400; }
-.hero__title .line { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+.hero__title .line { display: block; overflow: hidden; padding: 0 0.08em 0.24em; margin: 0 -0.08em -0.24em; }
 .hero__title .line > span { display: inline-block; }
 .hero__sub {
   margin: 26px auto 0; max-width: 46ch;
@@ -195,6 +196,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 
 /* Work: cream card over the field */
 .work {
+  touch-action: pan-y;
   position: relative; isolation: isolate; overflow: hidden;
   padding: clamp(96px, 13vw, 170px) var(--gutter);
   background: linear-gradient(100deg, #10201a, #1d4433);
@@ -264,31 +266,27 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 .about__link .icon { transition: transform 220ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) { .about__link:hover .icon { transform: translateX(3px); } }
 
-/* Education */
-.edu { padding: clamp(88px, 11vw, 140px) 0; }
-.edu__grid { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
-@media (max-width: 860px) { .edu__grid { grid-template-columns: minmax(0, 1fr); } }
-.school { padding: clamp(24px, 3.5vw, 40px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+/* Education, inside About */
+.schools { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line-strong); display: grid; gap: 20px; }
+.school { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 560px) { .school { grid-template-columns: minmax(0, 1fr); gap: 10px; } }
 .school__logo {
-  display: block; height: 48px; margin-bottom: 30px;
+  display: block; height: 40px;
   background: var(--ink);
   -webkit-mask: var(--logo) no-repeat left center / contain; mask: var(--logo) no-repeat left center / contain;
 }
-.school__logo--berkeley { --logo: url("img/berkeley-wordmark.svg"); width: 154px; }
-.school__logo--cornell { --logo: url("img/cornell-wordmark.svg"); width: 214px; height: 29px; margin-top: 10px; margin-bottom: 39px; }
-.degree + .degree { margin-top: 24px; }
-.degree h3 { font-size: 1.3rem; font-weight: 450; letter-spacing: -0.02em; line-height: 1.25; }
-.degree__field { margin-top: 4px; color: var(--ink-2); font-size: 1rem; }
-.tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.school__logo--berkeley { --logo: url("img/berkeley-wordmark.svg"); width: 128px; }
+.school__logo--cornell { --logo: url("img/cornell-wordmark.svg"); width: 150px; height: 20px; margin-top: 6px; }
+.school__info p { font-size: 1rem; line-height: 1.5; color: var(--ink-2); }
+.school__info p + p { margin-top: 6px; }
+.school__info strong { color: var(--ink); font-weight: 500; }
+.school__note { font-family: var(--mono); font-size: 12.5px !important; }
 .tag {
-  height: 28px; padding: 0 12px; display: inline-flex; align-items: center;
+  margin-left: 6px; height: 24px; padding: 0 10px; display: inline-flex; align-items: center; vertical-align: 2px;
   border: 1px solid var(--line-strong); border-radius: 999px;
-  font-family: var(--mono); font-size: 12.5px; font-weight: 500; color: var(--ink-2);
+  font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--ink-2); white-space: nowrap;
 }
 .tag--hi { border-color: var(--accent); background: var(--accent); color: var(--ground); }
-.honors { margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line); display: grid; gap: 8px; font-size: 0.98rem; color: var(--ink-2); }
-.honors li { padding-left: 16px; position: relative; }
-.honors li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 6px; height: 1px; background: var(--accent); }
 
 /* Contact */
 .contact { padding: clamp(96px, 12vw, 160px) 0; }
