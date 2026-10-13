@@ -41,10 +41,12 @@
   const WIN = { w: 64, h: 44 };
   const DASH = { x: 56, y: 98, w: 232, h: 78 };
   const DASH_C = { x: DASH.x + DASH.w / 2, y: DASH.y + DASH.h / 2 };
-  const PEOPLE = [{ x: 322, y: 124 }, { x: 352, y: 124 }];
+  // Each team lives in its own tool before; all three share the dashboard after.
+  const TEAMS = ['Warehouse', 'Accounting', 'Sales'];
+  const PILL = { w: 70, h: 15 };
 
   function create(host) {
-    const svg = el('svg', { viewBox: '34 90 690 186', class: 'sb', role: 'img', 'aria-label': 'Animation: a small robot shelves and labels scattered boxes, then three disagreeing systems merge into one dashboard that shows where every unit is, and the team smiles.' });
+    const svg = el('svg', { viewBox: '34 90 690 186', class: 'sb', role: 'img', 'aria-label': 'Animation: a small robot shelves and labels scattered boxes. Then three systems that disagree, used by the warehouse, accounting and sales teams, merge into one dashboard that shows where every unit is.' });
     host.prepend(svg);
     el('line', { x1: 40, y1: GROUND, x2: 718, y2: GROUND, class: 'sb-floor' }, svg);
 
@@ -64,7 +66,7 @@
       const g = el('g', { class: 'sb-line sb-mud' }, svg);
       el('rect', { x: 0, y: 0, width: WIN.w, height: WIN.h, rx: 3, class: 'sb-fill' }, g);
       el('line', { x1: 0, y1: 11, x2: WIN.w, y2: 11 }, g);
-      text(g, 5, 8.2, w.title, 6.5);
+      text(g, 5, 8.6, w.title, 7.5);
       text(g, WIN.w / 2, 35, w.n, 17, 'middle');
       return { g, ...w };
     });
@@ -73,7 +75,7 @@
     el('rect', { x: DASH.x, y: DASH.y, width: DASH.w, height: DASH.h, rx: 4, class: 'sb-fill' }, dash);
     el('line', { x1: DASH.x, y1: DASH.y + 12, x2: DASH.x + DASH.w, y2: DASH.y + 12 }, dash);
     [7, 13, 19].forEach((dx) => el('circle', { cx: DASH.x + dx, cy: DASH.y + 6, r: 1.6 }, dash));
-    text(dash, DASH.x + 28, DASH.y + 9, 'One dashboard', 6.5);
+    text(dash, DASH.x + 28, DASH.y + 9.2, 'Live inventory', 7.5);
     const cells = [];
     for (let i = 0; i < 6; i++) {
       const col = i % 3, row = i < 3 ? 1 : 0;
@@ -82,16 +84,15 @@
       cells.push(el('rect', { x: cx + 3, y: cy + 3, width: 16, height: 12, rx: 1, class: 'sb-cell', opacity: 0 }, dash));
     }
     text(dash, DASH.x + 172, DASH.y + 50, '6', 26, 'middle');
-    text(dash, DASH.x + 172, DASH.y + 64, 'units, all located', 7, 'middle');
+    text(dash, DASH.x + 172, DASH.y + 66, 'units, all located', 8.5, 'middle');
 
-    const people = PEOPLE.map((p) => {
-      const g = el('g', { class: 'sb-line', transform: `translate(${p.x} ${p.y})` }, svg);
-      el('circle', { cx: 0, cy: 0, r: 10, class: 'sb-fill' }, g);
-      el('path', { d: 'M -12 25 Q -12 13 0 13 Q 12 13 12 25' }, g);
-      const face = el('g', { class: 'sb-eyes' }, g);
-      el('circle', { cx: -3.5, cy: -2, r: 1.3 }, face);
-      el('circle', { cx: 3.5, cy: -2, r: 1.3 }, face);
-      return el('path', { d: '' }, g);
+    const teams = TEAMS.map((name, i) => {
+      const g = el('g', { class: 'sb-line sb-team sb-mud' }, svg);
+      el('rect', { x: 0, y: 0, width: PILL.w, height: PILL.h, rx: PILL.h / 2, class: 'sb-fill' }, g);
+      const check = el('path', { d: 'M 7 7.6 L 9.6 10.2 L 14 5', class: 'sb-check' }, g);
+      const label = text(g, PILL.w / 2, 10.6, name, 7.5, 'middle');
+      const w = SYSTEMS[i];
+      return { g, check, label, from: { x: w.x + (WIN.w - PILL.w) / 2, y: w.y + WIN.h + 6, r: w.r }, to: { x: DASH.x + 6 + i * (PILL.w + 6), y: DASH.y + DASH.h + 7 } };
     });
 
     const boxes = MESS.map(() => {
@@ -144,9 +145,17 @@
       dash.setAttribute('opacity', sys.dash.toFixed(3));
       dash.setAttribute('transform', `translate(${DASH_C.x} ${DASH_C.y}) scale(${ds.toFixed(3)}) translate(${-DASH_C.x} ${-DASH_C.y})`);
       cells.forEach((c, i) => c.setAttribute('opacity', Math.min(1, Math.max(0, sys.lit - i)).toFixed(3)));
-      // Mouths: a frown that turns into a smile.
-      const cy = lerp(3, 10, sys.mood);
-      people.forEach((m) => m.setAttribute('d', `M -4.5 5 Q 0 ${cy.toFixed(2)} 4.5 5`));
+      // Teams ride along with their systems, then line up under the dashboard and go green.
+      teams.forEach((t) => {
+        const m = sys.merge;
+        const x = lerp(t.from.x, t.to.x, m), y = lerp(t.from.y, t.to.y, m), r = lerp(t.from.r, 0, m);
+        t.g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${r.toFixed(2)} ${PILL.w / 2} ${PILL.h / 2})`);
+        const ok = sys.mood > 0.5;
+        t.g.classList.toggle('sb-good', ok);
+        t.g.classList.toggle('sb-mud', !ok);
+        t.check.setAttribute('opacity', Math.max(0, sys.mood * 2 - 1).toFixed(3));
+        t.label.setAttribute('x', lerp(PILL.w / 2, PILL.w / 2 + 5, sys.mood).toFixed(2));
+      });
     }
     function setCount(n) {
       state.tracked = n;
@@ -168,7 +177,7 @@
     const slotOf = (n) => ({ x: COLS[n % 3], y: LEVELS[Math.floor(n / 3)] });
 
     function reset() {
-      boxes.forEach((b, i) => { Object.assign(b, MESS[i]); b.label.classList.remove('on'); svg.insertBefore(b.g, robot); });
+      boxes.forEach((b, i) => { Object.assign(b, MESS[i]); b.label.classList.remove('on', 'ping'); svg.insertBefore(b.g, robot); });
       state.rx = REST; state.lift = GROUND;
       Object.assign(sys, { merge: 0, dash: 0, lit: 0, mood: 0 });
       setCount(0);
@@ -197,21 +206,21 @@
         const slot = slotOf(i);
         // Drive to the box.
         const from = state.rx, to = b.x - 28;
-        if (!(await tween(id, Math.max(260, Math.abs(to - from) * 1.4), (k) => { state.rx = lerp(from, to, k); }))) return;
+        if (!(await tween(id, Math.max(220, Math.abs(to - from) * 1.1), (k) => { state.rx = lerp(from, to, k); }))) return;
         // Scoop it up and square it.
         const x0 = b.x, y0 = b.y, r0 = b.r;
         svg.appendChild(b.g);
-        if (!(await tween(id, 240, (k) => { state.lift = lerp(GROUND, GROUND - 8, k); b.x = lerp(x0, state.rx + 28, k); b.y = lerp(y0, state.lift, k); b.r = lerp(r0, 0, k); }, easeOut))) return;
+        if (!(await tween(id, 200, (k) => { state.lift = lerp(GROUND, GROUND - 8, k); b.x = lerp(x0, state.rx + 28, k); b.y = lerp(y0, state.lift, k); b.r = lerp(r0, 0, k); }, easeOut))) return;
         // Carry it to its slot, raising the fork on the way.
         const cx = state.rx, tx = slot.x - 28, l0 = state.lift, l1 = slot.y - 6;
-        if (!(await tween(id, Math.max(420, Math.abs(tx - cx) * 1.35), (k) => { state.rx = lerp(cx, tx, k); state.lift = lerp(l0, l1, k); b.x = state.rx + 28; b.y = state.lift; }))) return;
+        if (!(await tween(id, Math.max(360, Math.abs(tx - cx) * 1.05), (k) => { state.rx = lerp(cx, tx, k); state.lift = lerp(l0, l1, k); b.x = state.rx + 28; b.y = state.lift; }))) return;
         // Set it down, label it, back away.
         if (!(await tween(id, 160, (k) => { state.lift = lerp(l1, slot.y, k); b.y = state.lift; b.x = state.rx + 28; }))) return;
         svg.insertBefore(b.g, robot);
         b.label.classList.add('on');
         setCount(i + 1);
         const bx = state.rx, bl = state.lift;
-        if (!(await tween(id, 260, (k) => { state.rx = lerp(bx, bx - 34, k); state.lift = lerp(bl, GROUND, k); }))) return;
+        if (!(await tween(id, 220, (k) => { state.rx = lerp(bx, bx - 34, k); state.lift = lerp(bl, GROUND, k); }))) return;
       }
       const ex = state.rx;
       if (!(await tween(id, 700, (k) => { state.rx = lerp(ex, REST, k); }))) return;
@@ -220,9 +229,11 @@
       if (!(await tween(id, 750, (k) => { sys.merge = k; }))) return;
       if (!(await tween(id, 320, (k) => { sys.dash = k; }, easeOut))) return;
       for (let i = 0; i < 6; i++) {
-        if (!(await tween(id, 120, (k) => { sys.lit = i + k; }, easeOut))) return;
+        const lbl = boxes[ORDER[i]].label;
+        lbl.classList.remove('ping'); void lbl.getBBox(); lbl.classList.add('ping');
+        if (!(await tween(id, 150, (k) => { sys.lit = i + k; }, easeOut))) return;
       }
-      if (!(await tween(id, 420, (k) => { sys.mood = k; }))) return;
+      if (!(await tween(id, 500, (k) => { sys.mood = k; }))) return;
       if (status) status.textContent = FINAL;
       if (replay && id === run) replay.hidden = false;
     }

@@ -232,6 +232,10 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 .sb .sb-good { color: var(--accent); }
 .sb .sb-text { fill: currentColor; stroke: none; font-family: var(--mono); font-weight: 500; }
 .sb .sb-cell { fill: currentColor; stroke: none; }
+.sb .sb-team { transition: color 300ms ease; }
+.sb .sb-check { stroke-width: 1.8; }
+.sb .sb-label.ping { animation: sb-ping 520ms var(--ease-out); }
+@keyframes sb-ping { 40% { transform: scale(1.35); } }
 .sb .sb-label, .sb .sb-label * { stroke: var(--accent); }
 .sb .sb-label { opacity: 0; transform: scale(0.6); transform-box: fill-box; transform-origin: center; transition: opacity 220ms ease, transform 320ms var(--ease-out); }
 .sb .sb-label.on { opacity: 1; transform: none; }
