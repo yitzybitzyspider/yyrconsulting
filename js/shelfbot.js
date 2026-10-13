@@ -32,9 +32,19 @@
   });
   const ORDER = [5, 4, 3, 2, 1, 0];
   const REST = 478;
+  // Three systems that disagree about the count, before they become one dashboard.
+  const SYSTEMS = [
+    { x: 56, y: 104, r: -3, title: 'Sheets', n: '14' },
+    { x: 134, y: 99, r: 2.5, title: 'ERP', n: '9' },
+    { x: 212, y: 106, r: -2, title: 'CRM', n: '11' },
+  ];
+  const WIN = { w: 64, h: 44 };
+  const DASH = { x: 56, y: 98, w: 232, h: 78 };
+  const DASH_C = { x: DASH.x + DASH.w / 2, y: DASH.y + DASH.h / 2 };
+  const PEOPLE = [{ x: 322, y: 124 }, { x: 352, y: 124 }];
 
   function create(host) {
-    const svg = el('svg', { viewBox: '34 126 690 150', class: 'sb', role: 'img', 'aria-label': 'Animation: a small robot picks up scattered boxes, places each one on a shelf, and labels it.' });
+    const svg = el('svg', { viewBox: '34 90 690 186', class: 'sb', role: 'img', 'aria-label': 'Animation: a small robot shelves and labels scattered boxes, then three disagreeing systems merge into one dashboard that shows where every unit is, and the team smiles.' });
     host.prepend(svg);
     el('line', { x1: 40, y1: GROUND, x2: 718, y2: GROUND, class: 'sb-floor' }, svg);
 
@@ -43,6 +53,46 @@
     el('line', { x1: SHELF.x1, y1: GROUND, x2: SHELF.x1, y2: SHELF.top }, shelf);
     LEVELS.forEach((y) => el('line', { x1: SHELF.x0, y1: y, x2: SHELF.x1, y2: y }, shelf));
     el('line', { x1: SHELF.x0, y1: SHELF.top, x2: SHELF.x1, y2: SHELF.top }, shelf);
+
+    const text = (parent, x, y, str, size, anchor) => {
+      const t = el('text', { x, y, 'font-size': size, 'text-anchor': anchor || 'start', class: 'sb-text' }, parent);
+      t.textContent = str;
+      return t;
+    };
+
+    const wins = SYSTEMS.map((w) => {
+      const g = el('g', { class: 'sb-line sb-mud' }, svg);
+      el('rect', { x: 0, y: 0, width: WIN.w, height: WIN.h, rx: 3, class: 'sb-fill' }, g);
+      el('line', { x1: 0, y1: 11, x2: WIN.w, y2: 11 }, g);
+      text(g, 5, 8.2, w.title, 6.5);
+      text(g, WIN.w / 2, 35, w.n, 17, 'middle');
+      return { g, ...w };
+    });
+
+    const dash = el('g', { class: 'sb-line sb-good', opacity: 0 }, svg);
+    el('rect', { x: DASH.x, y: DASH.y, width: DASH.w, height: DASH.h, rx: 4, class: 'sb-fill' }, dash);
+    el('line', { x1: DASH.x, y1: DASH.y + 12, x2: DASH.x + DASH.w, y2: DASH.y + 12 }, dash);
+    [7, 13, 19].forEach((dx) => el('circle', { cx: DASH.x + dx, cy: DASH.y + 6, r: 1.6 }, dash));
+    text(dash, DASH.x + 28, DASH.y + 9, 'One dashboard', 6.5);
+    const cells = [];
+    for (let i = 0; i < 6; i++) {
+      const col = i % 3, row = i < 3 ? 1 : 0;
+      const cx = DASH.x + 14 + col * 26, cy = DASH.y + 22 + row * 24;
+      el('rect', { x: cx, y: cy, width: 22, height: 18, rx: 1.5 }, dash);
+      cells.push(el('rect', { x: cx + 3, y: cy + 3, width: 16, height: 12, rx: 1, class: 'sb-cell', opacity: 0 }, dash));
+    }
+    text(dash, DASH.x + 172, DASH.y + 50, '6', 26, 'middle');
+    text(dash, DASH.x + 172, DASH.y + 64, 'units, all located', 7, 'middle');
+
+    const people = PEOPLE.map((p) => {
+      const g = el('g', { class: 'sb-line', transform: `translate(${p.x} ${p.y})` }, svg);
+      el('circle', { cx: 0, cy: 0, r: 10, class: 'sb-fill' }, g);
+      el('path', { d: 'M -12 25 Q -12 13 0 13 Q 12 13 12 25' }, g);
+      const face = el('g', { class: 'sb-eyes' }, g);
+      el('circle', { cx: -3.5, cy: -2, r: 1.3 }, face);
+      el('circle', { cx: 3.5, cy: -2, r: 1.3 }, face);
+      return el('path', { d: '' }, g);
+    });
 
     const boxes = MESS.map(() => {
       const g = el('g', { class: 'sb-line sb-box' }, svg);
@@ -76,12 +126,27 @@
     const status = host.querySelector('.shelfbot__count');
     const replay = host.querySelector('.shelfbot__replay');
     const state = { rx: REST, lift: GROUND, tracked: 0 };
+    const sys = { merge: 0, dash: 0, lit: 0, mood: 0 };
+    const FINAL = 'Three systems, one dashboard. Every unit located.';
     let run = 0;
 
     function draw() {
       robot.setAttribute('transform', `translate(${state.rx.toFixed(1)} 0)`);
       fork.setAttribute('transform', `translate(0 ${state.lift.toFixed(1)})`);
       for (const b of boxes) b.g.setAttribute('transform', `translate(${b.x.toFixed(1)} ${b.y.toFixed(1)}) rotate(${b.r.toFixed(1)} ${BW / 2} ${-BH / 2})`);
+      for (const w of wins) {
+        const m = sys.merge;
+        const cx = lerp(w.x + WIN.w / 2, DASH_C.x, m), cy = lerp(w.y + WIN.h / 2, DASH_C.y, m);
+        w.g.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${lerp(w.r, 0, m).toFixed(2)}) scale(${lerp(1, 0.6, m).toFixed(3)}) translate(${-WIN.w / 2} ${-WIN.h / 2})`);
+        w.g.setAttribute('opacity', (1 - Math.max(0, (m - 0.55) / 0.45)).toFixed(3));
+      }
+      const ds = lerp(0.94, 1, sys.dash);
+      dash.setAttribute('opacity', sys.dash.toFixed(3));
+      dash.setAttribute('transform', `translate(${DASH_C.x} ${DASH_C.y}) scale(${ds.toFixed(3)}) translate(${-DASH_C.x} ${-DASH_C.y})`);
+      cells.forEach((c, i) => c.setAttribute('opacity', Math.min(1, Math.max(0, sys.lit - i)).toFixed(3)));
+      // Mouths: a frown that turns into a smile.
+      const cy = lerp(3, 10, sys.mood);
+      people.forEach((m) => m.setAttribute('d', `M -4.5 5 Q 0 ${cy.toFixed(2)} 4.5 5`));
     }
     function setCount(n) {
       state.tracked = n;
@@ -105,6 +170,7 @@
     function reset() {
       boxes.forEach((b, i) => { Object.assign(b, MESS[i]); b.label.classList.remove('on'); svg.insertBefore(b.g, robot); });
       state.rx = REST; state.lift = GROUND;
+      Object.assign(sys, { merge: 0, dash: 0, lit: 0, mood: 0 });
       setCount(0);
       draw();
     }
@@ -116,7 +182,9 @@
         b.label.classList.add('on');
       });
       state.rx = REST; state.lift = GROUND;
+      Object.assign(sys, { merge: 1, dash: 1, lit: 6, mood: 1 });
       setCount(boxes.length);
+      if (status) status.textContent = FINAL;
       draw();
     }
 
@@ -146,7 +214,16 @@
         if (!(await tween(id, 260, (k) => { state.rx = lerp(bx, bx - 34, k); state.lift = lerp(bl, GROUND, k); }))) return;
       }
       const ex = state.rx;
-      await tween(id, 700, (k) => { state.rx = lerp(ex, REST, k); });
+      if (!(await tween(id, 700, (k) => { state.rx = lerp(ex, REST, k); }))) return;
+      // Act two: the three systems merge into one dashboard that knows where every unit is.
+      if (status) status.textContent = 'Merging three systems into one dashboard';
+      if (!(await tween(id, 750, (k) => { sys.merge = k; }))) return;
+      if (!(await tween(id, 320, (k) => { sys.dash = k; }, easeOut))) return;
+      for (let i = 0; i < 6; i++) {
+        if (!(await tween(id, 120, (k) => { sys.lit = i + k; }, easeOut))) return;
+      }
+      if (!(await tween(id, 420, (k) => { sys.mood = k; }))) return;
+      if (status) status.textContent = FINAL;
       if (replay && id === run) replay.hidden = false;
     }
 

@@ -18,6 +18,7 @@
   --cream: #fbf3e4;
   --forest: #173a2c;
   --sage: #9fc2a8;
+  --mud: #94702f;
 
   --serif: "Literata", "Iowan Old Style", Georgia, serif;
   --mono: "Red Hat Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -35,6 +36,7 @@
     --ink: #f1ece2;
     --ink-2: #b6c0b9;
     --accent: #9fc2a8;
+    --mud: #d4ab68;
     --line: rgb(241 236 226 / 0.13);
     --line-strong: rgb(241 236 226 / 0.3);
     --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 30px -10px rgb(0 0 0 / 0.6);
@@ -226,6 +228,10 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 .sb .sb-thick { stroke-width: 2.6; }
 .sb-floor { stroke: var(--line-strong); stroke-width: 1.4; vector-effect: non-scaling-stroke; stroke-dasharray: 2 6; }
 .sb-eyes circle { fill: currentColor; stroke: none; }
+.sb .sb-mud { color: var(--mud); }
+.sb .sb-good { color: var(--accent); }
+.sb .sb-text { fill: currentColor; stroke: none; font-family: var(--mono); font-weight: 500; }
+.sb .sb-cell { fill: currentColor; stroke: none; }
 .sb .sb-label, .sb .sb-label * { stroke: var(--accent); }
 .sb .sb-label { opacity: 0; transform: scale(0.6); transform-box: fill-box; transform-origin: center; transition: opacity 220ms ease, transform 320ms var(--ease-out); }
 .sb .sb-label.on { opacity: 1; transform: none; }
